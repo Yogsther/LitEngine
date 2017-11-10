@@ -35,6 +35,13 @@ public class LitEngine implements Runnable {
         return;
     }
 
+    public static void drawRaw(int pos, String value){
+        // Raw draw, no coordinates.
+        renderArray[pos] = value;
+        return;
+
+    }
+
     public static void print(int x, int y, String value){
 
         int pos = getPos(x,y);
@@ -46,6 +53,43 @@ public class LitEngine implements Runnable {
             charPos++;
         }
     }
+
+
+    public static void drawRect(int x, int y, int w, int h, String value){
+
+        // Draw top
+        for(int i=x; i <= (w+x); i++){
+            draw(i,y,value);
+        }
+        // Draw bottom
+        for(int i=x; i <= (w+x); i++){
+            draw(i,(y+h),value);
+        }
+        // Draw left
+        for(int i=y; i <= (h+y); i++){
+            draw(x, i,value);
+        }
+        // Draw right
+        for(int i=y; i <= (h+y); i++){
+            draw((x+w), i,value);
+        }
+
+    }
+
+    public static void printAnimated(int x, int y, String text, int speed) throws InterruptedException {
+
+        char[] textToAnimate = text.toCharArray();
+        int startPos = getPos(x,y);
+
+        for(int i = 0; i < text.length(); i++){
+            drawRaw(i+startPos, String.valueOf(textToAnimate[i]));
+            Thread.sleep(speed);
+        }
+
+    }
+
+
+
 
 
     // Translate coordinates to array index.
@@ -76,6 +120,9 @@ public class LitEngine implements Runnable {
         Thread runThread = new Thread(this);
         runThread.start();
     }
+
+
+
 
     private static void render(){
         // Render Engine
