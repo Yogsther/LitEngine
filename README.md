@@ -1,4 +1,16 @@
-LitEngine (the Livingfor.it Engine) is an ASCII Game Engine made by me.
+![logo](https://i.imgur.com/6GHFeFe.png)
 
-Made to be very easy, and user friendly.
-Works for games made to run in your terminal. 
+## LitEngine (the Livingfor.it Engine) is an ASCII Game Engine.
+###Made to be very easy, and user friendly. Runs directly in your terminal.
+
+Check out the Website!
+
+Setup:
+
+Make sure LitEngine.class is in your project.
+First thing on boot, initate LitEngine:
+
+```java
+LitEngine.start();
+```
+
