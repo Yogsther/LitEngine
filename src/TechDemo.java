@@ -2,34 +2,64 @@
     Tech demo for LitEngine v.0.1 - Olle Kaiser 11-09-17
  */
 
-
 import java.io.IOException;
 
 public class TechDemo {
 
-    // Initiate LitEngine
+
     // To clear the render, call LitEngine.clear()
 
 
     public static void main(String[] args) throws InterruptedException, IOException {
+        // Initiate LitEngine
 
-        // You have to first initiate the LitEngine, by calling it's main method.
-        // You can call it with "args" or "null".
-        LitEngine.main(args);
+        // Calling start() is essential, make sure you do that first (or second first after setRes).
+        // Args: "border" or "clear" weather you want a border around it, or not. User the same args for LigEngine.clear(type)
+        // when clearing.
+        LitEngine.start("border");
 
-        // If you wish to change the resolution (default 60x20) - Use LitEngine.setRes(x,y)
-        LitEngine.setRes(60, 20);
-
-        // To draw a pixel, use the draw function as shown below.
-        // This will draw one star (*) in each corner:
-
-        LitEngine.draw(0,0,"*");
-        LitEngine.draw(0,20,"*");
-        LitEngine.draw(60,0,"*");
-        LitEngine.draw(60,20,"*");
+        /*
 
 
-        LitEngine.drawRect(10,5, 30, 10, "*");
+        // Print text for tech demo
+        LitEngine.printAnimated(8,1,"Hello and welcome to the LitEngine Tech Demo!", 20);
+        LitEngine.printAnimated(8,2,"Let's draw some circles!", 30);
+
+        // Draw circles
+        LitEngine.drawCircle(10,15,5, "#");
+        LitEngine.drawCircle(20,10,2, "O");
+        LitEngine.drawCircle(30,15,3, "X");
+        LitEngine.drawCircle(46,13,9, "*");
+
+        // Wait 5 seconds
+        Thread.sleep(5000);
+
+        */
+
+
+        // Clear view
+        LitEngine.clear("border");
+
+        // Print text
+        LitEngine.printAnimated(2, 19, "Please enter your name:", 20);
+        String name = LitEngine.inputString();
+        LitEngine.clear("border");
+        LitEngine.printAnimated(2, 19, "Howdy " + name + "!", 20);
+
+        Thread.sleep(2000);
+
+        LitEngine.printAnimated(2,19,"Enter a number:", 20);
+        int rootMe = LitEngine.inputInt();
+        double root = Math.sqrt(rootMe);
+        LitEngine.clear("border");
+        LitEngine.printAnimated(2, 19, "The root of your number (" + rootMe + ") is " + root + "!", 20);
+
+
+        Thread.sleep(20000);
+
+        LitEngine.clear("border");
+        LitEngine.drawRect(2,5, 30, 10, "*");
+
 
 
         LitEngine.printAnimated(13, 7, "TechDemo!", 50);
@@ -49,9 +79,6 @@ public class TechDemo {
             Thread.sleep(200);
         }
 
-
-        // User LitEngine.print(x,y,value) to print out text, or longer values.
-        // If you use draw to print more then one character at a time, the resolution would be distorted.
 
     }
     
