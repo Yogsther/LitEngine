@@ -1,19 +1,43 @@
 ![logo](https://i.imgur.com/jFBC4nP.png)
 
 ## LitEngine (the Livingfor.it Engine) is an ASCII Game Engine.
-
 ### Made to be very easy, and user friendly. Runs directly in your terminal.
 
-Check out the Website!
+[Check out the Website and full documentation!](http://livingforit.xyz/lit_engine/ "L.it's Home.")
 
 Setup:
 
 Make sure LitEngine.class is in your project.
 First thing on launch, initate LitEngine:
 
+LitEngine.start(String type); "type" is the type of render you want, border or clear. 
+Border will draw a border around the window.
+
+ex:
 ```java
-LitEngine.start();
+LitEngine.start("border");
 ```
 
-Then install
+Now you are ready to use the engine. 
+Here are some methods you can use.
+
+```java
+// Draw pixel (value should only be one character.)
+LitEngine.draw(int x, int y, String value);
+
+// Print text
+LitEngine.print(int x, int y, String value);
+
+// Animate printed text (speed is how fast it prints out.)
+LitEngine.printAnimated(int x, int y, String value, int speed);
+
+// Draw rectangle (value should only be one character)
+LitEngine.drawRect(int x, int y, int width, in height, String value);
+
+
+
+
+
+```
+
 
