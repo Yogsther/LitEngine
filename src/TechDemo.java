@@ -18,7 +18,6 @@ public class TechDemo {
         // when clearing.
         LitEngine.start("border");
 
-        /*
 
 
         // Print text for tech demo
@@ -33,8 +32,6 @@ public class TechDemo {
 
         // Wait 5 seconds
         Thread.sleep(5000);
-
-        */
 
 
         // Clear view
@@ -55,10 +52,10 @@ public class TechDemo {
         LitEngine.printAnimated(2, 19, "The root of your number (" + rootMe + ") is " + root + "!", 20);
 
 
-        Thread.sleep(20000);
+        Thread.sleep(4000);
 
         LitEngine.clear("border");
-        LitEngine.drawRect(2,5, 30, 10, "*");
+        LitEngine.drawRect(10,5, 30, 10, "*");
 
 
 

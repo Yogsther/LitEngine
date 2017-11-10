@@ -22,6 +22,7 @@ Now you are ready to use the engine.
 Here are some methods you can use.
 
 ```java
+
 // Draw pixel (value should only be one character.)
 LitEngine.draw(int x, int y, String value);
 
@@ -32,11 +33,21 @@ LitEngine.print(int x, int y, String value);
 LitEngine.printAnimated(int x, int y, String value, int speed);
 
 // Draw rectangle (value should only be one character)
-LitEngine.drawRect(int x, int y, int width, in height, String value);
+LitEngine.drawRect(int x, int y, int width, int height, String value);
+
+// Draw circle (value should only be one character)
+LitEngine.drawCircle(int x, int y, int radius, String value);
+
+// Clear everything (type = "border" || "clear")
+LitEngine.clear(String type)
 
 
+// Get input
+// Get String
+String string = LitEngine.inputString();
 
-
+// Get int
+int num = LitEngine.inputInt();
 
 ```
 
