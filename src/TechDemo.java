@@ -1,5 +1,5 @@
 /*
-    Tech demo for LitEngine v.0.1 - Olle Kaiser 11-09-17
+    Tech demo for LitEngine v.0.2 - Olle Kaiser 11-09-17
  */
 
 import java.io.IOException;
@@ -16,8 +16,14 @@ public class TechDemo {
         // Calling start() is essential, make sure you do that first (or second first after setRes).
         // Args: "border" or "clear" weather you want a border around it, or not. User the same args for LigEngine.clear(type)
         // when clearing.
-        LitEngine.start("border");
 
+        // When developing, and debugging you can use methods starting with "debug" to help yourself.
+        // For example, LitEngine.debugDisableSplash(); will disable the splash screen.
+        // LitEngine.debugDisableSplash();
+
+        // To set resolution, use LitEngine.setRes(x,y) before you start the engine.
+        LitEngine.setRes(60,20);
+        LitEngine.start("border");
 
 
         // Print text for tech demo

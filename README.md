@@ -39,6 +39,10 @@ LitEngine.printAnimated(int x, int y, String value, int speed);
 // Draw rectangle (value should only be one character)
 LitEngine.drawRect(int x, int y, int width, int height, String value);
 
+// Draw animated rectangle (value should only be one character)
+LitEngine.drawRectAnimated(int x, int y, int width, int height, String value, int speed);
+
+
 // Draw circle (value should only be one character)
 LitEngine.drawCircle(int x, int y, int radius, String value);
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LitEngine_TechDemo:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/LitEngine_TechDemo_jar</output-path>
+    <root id="archive" name="LitEngine.jar">
+      <element id="module-output" name="LitEngine" />
+    </root>
+  </artifact>
+</component>

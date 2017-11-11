@@ -3,7 +3,13 @@ import java.util.Scanner;
 
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
-    Olle Kaiser 2017(11-10) / GitHub.com/Yogsther
+    v.0.2
+    Olle Kaiser 2017 / GitHub.com/Yogsther
+
+    Github:         https://github.com/Yogsther/LitEngine
+    Website:        http://livingforit.xyz/lit_engine/
+    Documentation:  http://livingforit.xyz/lit_engine/documentation
+
 */
 
 
@@ -11,21 +17,46 @@ public class LitEngine{
 
     // Variables for render engine
     public static int height = 20+1;
-    public static int width = 60+1;
+    public static int width = 70+1;
     public static boolean doRender = false;
     public static JTextArea textArea = new JTextArea();
     public static String[] renderArray = new String[width*height];
+    public static boolean renderSplash = true;
 
 
     public static void main(String[] args) throws InterruptedException {
-
+        // main() should not be run, but if it does, an error message gets printed.
+        start("clear");
+        printAnimated(0, 0, "You ran the L.it Engine class, LitEngine.main(); should not be called. Make another class, and call LitEngine.start() and other methods instead. Read the documentation at www.Livingforit.xyz/lit_engine", 20);
+        while(true){
+            Thread.sleep(1000);
+        }
     }
 
     // Call this method on startup.
-    public static synchronized void start(String type){
+    public static synchronized void start(String type) throws InterruptedException {
         init(type);
+
+        if(renderSplash){
+            // Render splash screen
+            drawRectAnimated(17,7,24, 6,"*",5);
+            printAnimated(20, 9, "Powered by", 20);
+            printAnimated(20, 10, "the Livingfor.it", 20);
+            printAnimated(20, 11, "Engine (v.0.2)", 20);
+            Thread.sleep(1000);
+
+                    drawRectAnimated(17,7,24, 6," ",5);
+                    Thread.sleep(500);
+
+                    init(type);
+                    Thread.sleep(500);
+            }
     }
 
+
+    public static void debugDisableSplash(){
+        renderSplash = false;
+    }
 
 
     public static void draw(int x, int y, String value){
@@ -86,6 +117,38 @@ public class LitEngine{
         render();
     }
 
+    public static void drawRectAnimated(int x, int y, int w, int h, String value, int speed) throws InterruptedException {
+
+        // Draw top
+        for(int i=x; i <= (w+x); i++){
+            drawNoRender(i,y,value);
+            Thread.sleep(speed);
+            render();
+        }
+
+        // Draw right
+        for(int i=y; i <= (h+y); i++){
+            drawNoRender((x+w), i,value);
+            Thread.sleep(speed);
+            render();
+        }
+
+        // Draw bottom
+        for(int i=(x+w); i >= x; i = i-1){
+            drawNoRender(i,(y+h),value);
+            Thread.sleep(speed);
+            render();
+        }
+        // Draw left
+        for(int i=(y+h); i >= y; i = i-1){
+            drawNoRender(x, i,value);
+            Thread.sleep(speed);
+            render();
+        }
+
+
+    }
+
 
     public static void drawCircle(int x, int y, int r, String value){
 
@@ -131,7 +194,7 @@ public class LitEngine{
     }
 
 
-    private static void init(String request){
+    private static void init(String request) throws InterruptedException {
         // Initiate engine.
         // Create array render array
 
@@ -152,9 +215,49 @@ public class LitEngine{
             return;
         }
 
+        if(request == "plot"){
+
+            // Draw entire window
+            i = 0;
+            while(i < (width*height)){
+                renderArray[i] = "*";
+                i++;
+            }
+
+            i = 0;
+            int printInt = i;
+            while(i < width){
+                // Draw top
+                if(printInt > 9){
+                    printInt = 0;
+                }
+                String iString = Integer.toString(printInt);
+                draw(i, 0, iString);
+                printInt++;
+                i++;
+            }
+
+            i = 0;
+            printInt = 0;
+            while(i < height){
+                // Draw top
+                if(printInt > 9){
+                    printInt = 0;
+                }
+                String iString = Integer.toString(printInt);
+                draw(0, i, iString);
+                printInt++;
+                i++;
+            }
+
+            while(true){
+                Thread.sleep(1000);
+            }
+        }
+
     }
 
-    public static void clear(String type){
+    public static void clear(String type) throws InterruptedException {
         init(type);
     }
 
@@ -167,7 +270,7 @@ public class LitEngine{
         String print = "\r";
 
         // Insert blank spaces
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < width; i++) {
             print = print + "\n";
         }
 
@@ -186,11 +289,10 @@ public class LitEngine{
     }
 
 
-    // !! Do not use this function, not complete. Keep original resolution.
     public static void setRes(int x, int y){
         width = x + 1;
         height = y + 1;
-        return;
+        renderArray = new String[width*height];
     }
 
 
