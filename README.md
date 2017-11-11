@@ -5,6 +5,9 @@
 
 [Check out the Website and full documentation!](http://livingforit.xyz/lit_engine/ "L.it's Home.")
 
+Try running TechDemo.class to see what this beast can do.
+
+
 Setup:
 
 Make sure LitEngine.class is in your project.
@@ -21,6 +24,7 @@ LitEngine.start("border");
 Now you are ready to use the engine. 
 Here are some methods you can use.
 
+### Draw
 ```java
 
 // Draw pixel (value should only be one character.)
@@ -40,7 +44,10 @@ LitEngine.drawCircle(int x, int y, int radius, String value);
 
 // Clear everything (type = "border" || "clear")
 LitEngine.clear(String type)
+```
 
+### Input
+```java
 
 // Get input
 // Get String
