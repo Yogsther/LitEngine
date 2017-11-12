@@ -17,7 +17,7 @@ public class LitEngine{
 
     // Variables for render engine
     public static int height = 20+1;
-    public static int width = 70+1;
+    public static int width = 60+1;
     public static boolean doRender = false;
     public static JTextArea textArea = new JTextArea();
     public static String[] renderArray = new String[width*height];
@@ -81,6 +81,14 @@ public class LitEngine{
         return;
 
     }
+
+    public static void drawRawNoRender(int pos, String value){
+        // Raw draw, no coordinates.
+        renderArray[pos] = value;
+        return;
+
+    }
+
 
     public static void print(int x, int y, String value){
 
@@ -263,7 +271,7 @@ public class LitEngine{
 
 
 
-    private static void render(){
+    public static void render(){
         // Render Engine
         int drawn = 0;
         int current = 0;
