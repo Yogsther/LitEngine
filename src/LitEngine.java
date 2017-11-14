@@ -3,15 +3,40 @@ import java.util.Scanner;
 
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
-    v.0.2
+    Version: 0.2
     Olle Kaiser 2017 / GitHub.com/Yogsther
 
-    Github:         https://github.com/Yogsther/LitEngine
-    Website:        http://livingforit.xyz/lit_engine/
-    Documentation:  http://livingforit.xyz/lit_engine/documentation
+    Github:                     https://github.com/Yogsther/LitEngine
+    Website:                    http://livingforit.xyz/lit_engine
+    Documentation:              http://livingforit.xyz/lit_engine/documentation
+    Plotter (ASCII Art -> LitCode): http://livingforit.xyz/lit_engine/plotter
+
+    Tips:
+        - Read the documentation!
+        - Use Plotter, it's really helpful!
+
+        If you are having any problems, please contact me on discord, mail or github.
+
+
+    Contact:
+
+    Discord:  - Yogsther#7884
+    Github:   - https://github.com/Yogsther
+    Mail:     - yogsther@gmail.com
+
+
 
 */
 
+
+/*  TODO
+
+    Documentation:
+    setTitle(String title);
+
+
+
+*/
 
 public class LitEngine{
 
@@ -22,6 +47,7 @@ public class LitEngine{
     public static JTextArea textArea = new JTextArea();
     public static String[] renderArray = new String[width*height];
     public static boolean renderSplash = true;
+    public static String gameTitle = "L.it Engine";
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -36,6 +62,14 @@ public class LitEngine{
 
     // Call this method on startup.
     public static synchronized void start(String type) throws InterruptedException {
+
+        // Set up JFrame
+
+        JFrame frame = new JFrame(gameTitle);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
         init(type);
 
         if(renderSplash){
@@ -59,6 +93,10 @@ public class LitEngine{
         renderSplash = false;
     }
 
+
+    public static void setTitle(String title){
+        gameTitle = title;
+    }
 
     public static void draw(int x, int y, String value){
         // Draw method do draw a single pixel. "Value" is recommended to be a single character.
