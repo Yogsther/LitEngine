@@ -1,10 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
 
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
-    Version: 0.2
+    Version: 0.3 beta
     Olle Kaiser 2017 / GitHub.com/Yogsther
 
     Github:                     https://github.com/Yogsther/LitEngine
@@ -37,7 +36,7 @@ import java.util.Scanner;
     - JFrame integration
 
     To Fix:
-    - Font
+    - todo Fonts!
 
     To Add:
     - Input
@@ -83,6 +82,7 @@ public class LitEngine{
 
         // Setup pixelFrame, the text that displays all ASCII stuff.
         pixelFrame = new JLabel("Starting...");
+
         pixelFrame.setLayout(null);
 
         // Position pixelFrame
@@ -99,9 +99,7 @@ public class LitEngine{
         // Set JFrame to visible
         frame.setVisible(true);
 
-        // Set font
-        // TODO Not working
-        pixelFrame.setFont(new Font("Courier New", Font.PLAIN, 12));
+
 
 
         init(type);
@@ -347,12 +345,16 @@ public class LitEngine{
 
     public static void render(){
         // Render Engine
+
+        // Open HTML
+        // Start of print string
+
+        // TODO Get fonts working!
+        String print = "<html><font face=\"verdana\" color=\"green\"><pre>";
+
         int drawn = 0;
         int current = 0;
-        // Open HTML
-        String print = "<html><pre>";
-
-        // Draw out grid
+        // Draw out grid loop
         while (drawn < (height * width)) {
             while (current < width) {
                 print = print + renderArray[drawn];
@@ -362,7 +364,9 @@ public class LitEngine{
             current = 0;
             print = print + "<br>";
         }
-        print = print + "</pre></html>";
+
+        // End of print string
+        print = print + "</pre></font></html>";
         // Print out the rendered text.
         pixelFrame.setText(print);
 
