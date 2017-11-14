@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.util.Scanner;
 
 /*
@@ -17,24 +18,30 @@ import java.util.Scanner;
 
         If you are having any problems, please contact me on discord, mail or github.
 
-
     Contact:
 
     Discord:  - Yogsther#7884
     Github:   - https://github.com/Yogsther
     Mail:     - yogsther@gmail.com
 
-
-
 */
 
 
-/*  TODO
+/*
+    TODO list
 
     Documentation:
-    setTitle(String title);
+    - setTitle(String title);
 
+    Update website:
+    - JFrame integration
 
+    To Fix:
+    - Font
+
+    To Add:
+    - Input
+    - Audio support
 
 */
 
@@ -43,11 +50,12 @@ public class LitEngine{
     // Variables for render engine
     public static int height = 20+1;
     public static int width = 60+1;
-    public static boolean doRender = false;
-    public static JTextArea textArea = new JTextArea();
+
     public static String[] renderArray = new String[width*height];
     public static boolean renderSplash = true;
     public static String gameTitle = "L.it Engine";
+    public static JFrame frame;
+    public static JLabel pixelFrame;
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -64,10 +72,36 @@ public class LitEngine{
     public static synchronized void start(String type) throws InterruptedException {
 
         // Set up JFrame
-
-        JFrame frame = new JFrame(gameTitle);
+        frame = new JFrame(gameTitle);
+        frame.getContentPane().setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize((width*10), (height*10*2));
+        frame.setResizable(false);
 
+        // Set background to black
+        frame.getContentPane().setBackground(Color.BLACK);
+
+        // Setup pixelFrame, the text that displays all ASCII stuff.
+        pixelFrame = new JLabel("Starting...");
+        pixelFrame.setLayout(null);
+
+        // Position pixelFrame
+        pixelFrame.setBounds(0,-15,width*10, height*20);
+        pixelFrame.setBackground(Color.BLACK);
+
+
+        // Change color on pixelFrame
+        pixelFrame.setForeground(Color.WHITE);
+
+        // Add pixelFrame
+        frame.getContentPane().add(pixelFrame);
+
+        // Set JFrame to visible
+        frame.setVisible(true);
+
+        // Set font
+        // TODO Not working
+        pixelFrame.setFont(new Font("Courier New", Font.PLAIN, 12));
 
 
         init(type);
@@ -247,6 +281,7 @@ public class LitEngine{
 
         int i = 0;
         while(i < (width*height)){
+            // Insert empty spaces ‌‌
             renderArray[i] = " ";
             i++;
         }
@@ -314,12 +349,8 @@ public class LitEngine{
         // Render Engine
         int drawn = 0;
         int current = 0;
-        String print = "\r";
-
-        // Insert blank spaces
-        for (int i = 0; i < width; i++) {
-            print = print + "\n";
-        }
+        // Open HTML
+        String print = "<html><pre>";
 
         // Draw out grid
         while (drawn < (height * width)) {
@@ -329,10 +360,13 @@ public class LitEngine{
                 drawn++;
             }
             current = 0;
-            print = print + "\n";
+            print = print + "<br>";
         }
+        print = print + "</pre></html>";
         // Print out the rendered text.
-        System.out.print(print);
+        pixelFrame.setText(print);
+
+        // Old render system - System.out.print(print);
     }
 
 
@@ -346,14 +380,12 @@ public class LitEngine{
 
     // Get input string
     public static String inputString(){
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        String input = JOptionPane.showInputDialog(null);
         return input;
     }
     // Get input int
     public static int inputInt(){
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
+        int input = Integer.parseInt(JOptionPane.showInputDialog(null));
         return input;
     }
 

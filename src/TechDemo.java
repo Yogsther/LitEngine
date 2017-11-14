@@ -23,6 +23,7 @@ public class TechDemo {
 
         // To set resolution, use LitEngine.setRes(x,y) before you start the engine.
         LitEngine.setRes(60,20);
+        LitEngine.setTitle("LitEngine Tech Demo");
         LitEngine.start("border");
 
 
