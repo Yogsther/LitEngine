@@ -1,2 +1,0 @@
-java TechDemo
-pause
