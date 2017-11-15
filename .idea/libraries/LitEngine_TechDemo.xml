@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="LitEngine_TechDemo">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/production/LitEngine/LitEngine_TechDemo.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

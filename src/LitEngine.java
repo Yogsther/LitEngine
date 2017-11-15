@@ -3,7 +3,7 @@ import java.awt.*;
 
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
-    Version: 0.3 beta
+    Version: 0.3 beta (JFrame integration)
     Olle Kaiser 2017 / GitHub.com/Yogsther
 
     Github:                     https://github.com/Yogsther/LitEngine
@@ -35,8 +35,6 @@ import java.awt.*;
     Update website:
     - JFrame integration
 
-    To Fix:
-    - todo Fonts!
 
     To Add:
     - Input
@@ -67,15 +65,26 @@ public class LitEngine{
         }
     }
 
-    // Call this method on startup.
+    // Call this method to start up LitEngine.
     public static synchronized void start(String type) throws InterruptedException {
 
         // Set up JFrame
         frame = new JFrame(gameTitle);
+
+        // Set icon image
+        Image icon = Toolkit.getDefaultToolkit().getImage(LitEngine.class.getResource("icon.png"));
+        frame.setIconImage(icon);
+
         frame.getContentPane().setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize((width*10), (height*10*2));
+
+        // Set resolution
+        double newWidth = width*10*0.72;
+        int finalWidth = (int)newWidth;
+
+        frame.setSize(finalWidth, height*20);
         frame.setResizable(false);
+        frame.setDefaultLookAndFeelDecorated(true);
 
         // Set background to black
         frame.getContentPane().setBackground(Color.BLACK);
@@ -84,6 +93,10 @@ public class LitEngine{
         pixelFrame = new JLabel("Starting...");
 
         pixelFrame.setLayout(null);
+
+        // Set font
+        pixelFrame.setFont(new Font("Courier New", Font.BOLD, 12));
+
 
         // Position pixelFrame
         pixelFrame.setBounds(0,-15,width*10, height*20);
@@ -103,6 +116,8 @@ public class LitEngine{
 
 
         init(type);
+
+
 
         if(renderSplash){
             // Render splash screen
@@ -141,14 +156,23 @@ public class LitEngine{
     public static void drawNoRender(int x, int y, String value){
         // Draw method do draw a single pixel. "Value" is recommended to be a single character.
         int pos = getPos(x,y);
-        renderArray[pos] = value;
+        try{
+            renderArray[pos] = value;
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
         return;
     }
 
     public static void drawRaw(int pos, String value){
         // Raw draw, no coordinates.
-        renderArray[pos] = value;
-        render();
+        try{
+            renderArray[pos] = value;
+            render();
+        } catch(ArrayIndexOutOfBoundsException e){
+            render();
+            return;
+        }
         return;
 
     }
@@ -174,6 +198,27 @@ public class LitEngine{
         render();
     }
 
+
+
+    public static void drawRectNoRender(int x, int y, int w, int h, String value){
+
+        // Draw top
+        for(int i=x; i <= (w+x); i++){
+            drawNoRender(i,y,value);
+        }
+        // Draw bottom
+        for(int i=x; i <= (w+x); i++){
+            drawNoRender(i,(y+h),value);
+        }
+        // Draw left
+        for(int i=y; i <= (h+y); i++){
+            drawNoRender(x, i,value);
+        }
+        // Draw right
+        for(int i=y; i <= (h+y); i++){
+            drawNoRender((x+w), i,value);
+        }
+    }
 
     public static void drawRect(int x, int y, int w, int h, String value){
 
@@ -272,6 +317,32 @@ public class LitEngine{
         return row + x;
     }
 
+    public static void clearNoRender(String request){
+        initNoRender(request);
+    }
+
+    private static void initNoRender(String request){
+
+        // Initiate engine.
+        // Create array render array
+
+        int i = 0;
+        while(i < (width*height)){
+            // Insert empty spaces ‌‌
+            renderArray[i] = " ";
+            i++;
+        }
+
+        if(request == "border"){
+            drawRectNoRender(0, 0, width-1, height-1, "*");
+            return;
+        }
+
+        if(request == "clear"){
+            return;
+        }
+
+    }
 
     private static void init(String request) throws InterruptedException {
         // Initiate engine.
@@ -350,7 +421,7 @@ public class LitEngine{
         // Start of print string
 
         // TODO Get fonts working!
-        String print = "<html><font face=\"verdana\" color=\"green\"><pre>";
+        String print = "<html><pre>";
 
         int drawn = 0;
         int current = 0;
@@ -366,7 +437,7 @@ public class LitEngine{
         }
 
         // End of print string
-        print = print + "</pre></font></html>";
+        print = print + "</pre></html>";
         // Print out the rendered text.
         pixelFrame.setText(print);
 

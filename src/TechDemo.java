@@ -19,12 +19,28 @@ public class TechDemo {
 
         // When developing, and debugging you can use methods starting with "debug" to help yourself.
         // For example, LitEngine.debugDisableSplash(); will disable the splash screen.
-        // LitEngine.debugDisableSplash();
+        LitEngine.debugDisableSplash();
 
         // To set resolution, use LitEngine.setRes(x,y) before you start the engine.
-        LitEngine.setRes(60,20);
+        LitEngine.setRes(90,20);
         LitEngine.setTitle("LitEngine Tech Demo");
         LitEngine.start("border");
+
+        int x = 0;
+        int y = 0;
+        while(x < 1000){
+            LitEngine.clearNoRender("border");
+            Doodles.Dab(x,y);
+            LitEngine.render();
+            x++;
+            Thread.sleep(25);
+            if(x > 30){
+                x = 0;
+            }
+        }
+
+
+        Thread.sleep(200000);
 
 
         // Print text for tech demo
