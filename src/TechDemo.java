@@ -39,6 +39,9 @@ public class TechDemo{
         LitEngine.setTitle("LitEngine Tech Demo");
         LitEngine.start("border");
 
+        Doodles.ColorTest(0,0);
+        LitEngine.render();
+        Thread.sleep(10000);
 
 
 
