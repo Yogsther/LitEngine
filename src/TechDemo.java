@@ -2,12 +2,25 @@
     Tech demo for LitEngine v.0.2 - Olle Kaiser 11-09-17
  */
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
-public class TechDemo {
+// TODO add timer, add winner message
 
+public class TechDemo{
 
-    // To clear the render, call LitEngine.clear()
+    public static int random(int max){
+        double random = Math.floor(Math.random()*max);
+        int returnRandom = (int)random;
+        return returnRandom;
+    }
+
+    public static int hero_x = random(85);
+    public static int hero_y = random(16);
+
+    public static int player_x = random(85);
+    public static int player_y = random(16);
 
 
     public static void main(String[] args) throws InterruptedException, IOException {
@@ -26,18 +39,78 @@ public class TechDemo {
         LitEngine.setTitle("LitEngine Tech Demo");
         LitEngine.start("border");
 
-        int x = 0;
-        int y = 0;
-        while(x < 1000){
-            LitEngine.clearNoRender("border");
-            Doodles.Dab(x,y);
-            LitEngine.render();
-            x++;
-            Thread.sleep(25);
-            if(x > 30){
-                x = 0;
+
+        LitEngine.frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
             }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                // Hero controller handler
+                if(e.getKeyCode() == 87){
+                    TechDemo.hero_y -= 1;
+                }
+                if(e.getKeyCode() == 83){
+                    TechDemo.hero_y++;
+                }
+                if(e.getKeyCode() == 65){
+                    TechDemo.hero_x -= 1;
+                }
+                if(e.getKeyCode() == 68){
+                    TechDemo.hero_x++;
+                }
+
+                // Player controller handler
+                if(e.getKeyCode() == 38){
+                    player_y -= 1;
+                }
+                if(e.getKeyCode() == 40){
+                    player_y++;
+                }
+                if(e.getKeyCode() == 37){
+                    player_x -= 1;
+                }
+                if(e.getKeyCode() == 39){
+                    player_x++;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+
+        boolean alive= true;
+
+        while(alive){
+            LitEngine.clearNoRender("border");
+
+            // Collisions
+            hero_x = checkCollision_x(hero_x);
+            hero_y = checkCollision_y(hero_y);
+
+            player_x = checkCollision_x(player_x);
+            player_y = checkCollision_y(player_y);
+
+
+            Doodles.Hero(hero_x,hero_y);
+            Doodles.Monster(player_x,player_y);
+
+            if(Math.abs(hero_x-player_x)<2 && Math.abs(hero_y-player_y)<2){
+                alive = false;
+            }
+
+            LitEngine.render();
+            Thread.sleep(16);
         }
+
+
+
+        LitEngine.clear("border");
+        LitEngine.printAnimatedCentered("Hero died!", 20);
 
 
         Thread.sleep(200000);
@@ -101,5 +174,33 @@ public class TechDemo {
 
 
     }
+
+
+    public static int checkCollision_x(int x){
+
+        // Check for out of bounds
+        if(x > 85){
+            x = 85;
+        }
+        if(x < 0){
+            x = 0;
+        }
+
+        return x;
+    }
+
+    public static int checkCollision_y(int y){
+
+        if(y > 16){
+            y = 16;
+        }
+        if(y < 0){
+            y = 0;
+        }
+
+        return y;
+    }
+
+
     
 }

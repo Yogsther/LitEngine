@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
     Version: 0.3 beta (JFrame integration)
@@ -79,10 +82,10 @@ public class LitEngine{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set resolution
-        double newWidth = width*10*0.72;
+        double newWidth = width*10*0.708;
         int finalWidth = (int)newWidth;
 
-        frame.setSize(finalWidth, height*20);
+        frame.setSize(finalWidth, height*19);
         frame.setResizable(false);
         frame.setDefaultLookAndFeelDecorated(true);
 
@@ -99,7 +102,7 @@ public class LitEngine{
 
 
         // Position pixelFrame
-        pixelFrame.setBounds(0,-15,width*10, height*20);
+        pixelFrame.setBounds(0,-15,width*10, height*19);
         pixelFrame.setBackground(Color.BLACK);
 
 
@@ -111,8 +114,6 @@ public class LitEngine{
 
         // Set JFrame to visible
         frame.setVisible(true);
-
-
 
 
         init(type);
@@ -295,6 +296,7 @@ public class LitEngine{
         render();
     }
 
+
     public static void printAnimated(int x, int y, String text, int speed) throws InterruptedException {
 
         char[] textToAnimate = text.toCharArray();
@@ -309,6 +311,20 @@ public class LitEngine{
 
 
 
+
+    public static void printAnimatedCentered(String text, int speed) throws InterruptedException {
+
+        char[] textToAnimate = text.toCharArray();
+        int x = (width / 2) - (textToAnimate.length/2);
+        int y = height/2;
+        int startPos = getPos(x,y);
+
+        for(int i = 0; i < text.length(); i++){
+            drawRaw(i+startPos, String.valueOf(textToAnimate[i]));
+            Thread.sleep(speed);
+        }
+
+    }
 
 
     // Translate coordinates to array index.
