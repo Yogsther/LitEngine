@@ -1,5 +1,5 @@
 /*
-    Tech demo for LitEngine v.0.2 - Olle Kaiser 11-09-17
+    Tech demo for LitEngine v.0.3 - Olle Kaiser 11-09-17
  */
 
 import java.awt.event.KeyEvent;

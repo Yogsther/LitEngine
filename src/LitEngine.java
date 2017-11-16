@@ -40,7 +40,7 @@ import java.awt.event.KeyListener;
 
 
     To Add:
-    - Input
+    - Color support
     - Audio support
 
 */
@@ -82,7 +82,7 @@ public class LitEngine{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Set resolution
-        double newWidth = width*10*0.708;
+        double newWidth = width*10*0.72;
         int finalWidth = (int)newWidth;
 
         frame.setSize(finalWidth, height*19);
@@ -360,16 +360,34 @@ public class LitEngine{
 
     }
 
+    /*
+    public Pixel(String value, int color){
+        value = value;
+        color = color;
+    }
+
+    */
+
+    private static void summonRenderArray(){
+
+        for(int i = 0;i < (width*height); i++){
+            // Insert empty spaces ‌‌
+
+            renderArray[i] = new Pixel(" ", 0);
+
+        }
+
+
+    }
+
+
+
+
     private static void init(String request) throws InterruptedException {
         // Initiate engine.
         // Create array render array
 
-        int i = 0;
-        while(i < (width*height)){
-            // Insert empty spaces ‌‌
-            renderArray[i] = " ";
-            i++;
-        }
+        summonRenderArray();
 
         if(request == "border"){
             drawRect(0, 0, width-1, height-1, "*");
