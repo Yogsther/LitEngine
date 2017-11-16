@@ -51,7 +51,7 @@ public class LitEngine{
     public static int height = 20+1;
     public static int width = 60+1;
 
-    public static String[] renderArray = new String[width*height];
+    public static Pixel[] renderArray = new Pixel[width*height];
     public static boolean renderSplash = true;
     public static String gameTitle = "L.it Engine";
     public static JFrame frame;
@@ -61,7 +61,6 @@ public class LitEngine{
     public static void main(String[] args) throws InterruptedException {
         // main() should not be run, but if it does, an error message gets printed.
         start("clear");
-        doodle();
         printAnimated(0, 0, "You ran the L.it Engine class, LitEngine.main(); should not be called. Make another class, and call LitEngine.start() and other methods instead. Read the documentation at www.Livingforit.xyz/lit_engine", 20);
         while(true){
             Thread.sleep(1000);
@@ -70,6 +69,9 @@ public class LitEngine{
 
     // Call this method to start up LitEngine.
     public static synchronized void start(String type) throws InterruptedException {
+
+        // Setup colors
+        loadColors();
 
         // Set up JFrame
         frame = new JFrame(gameTitle);
@@ -107,7 +109,8 @@ public class LitEngine{
 
 
         // Change color on pixelFrame
-        pixelFrame.setForeground(Color.WHITE);
+        //pixelFrame.setForeground(Color.WHITE);
+        // Removed because of added color support.
 
         // Add pixelFrame
         frame.getContentPane().add(pixelFrame);
@@ -149,7 +152,11 @@ public class LitEngine{
     public static void draw(int x, int y, String value){
         // Draw method do draw a single pixel. "Value" is recommended to be a single character.
         int pos = getPos(x,y);
-        renderArray[pos] = value;
+        try{
+        renderArray[pos] = new Pixel(value, 0);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
         render();
         return;
     }
@@ -158,29 +165,80 @@ public class LitEngine{
         // Draw method do draw a single pixel. "Value" is recommended to be a single character.
         int pos = getPos(x,y);
         try{
-            renderArray[pos] = value;
+            renderArray[pos] = new Pixel(value, 0);
         } catch(ArrayIndexOutOfBoundsException e){
             return;
         }
         return;
     }
+
+    public static void drawColor(int x, int y, String value, int color){
+        // Draw with color method.
+        int pos = getPos(x,y);
+        try{
+            renderArray[pos] = new Pixel(value, color);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
+        render();
+        return;
+    }
+
+
+    public static void drawNoRenderColor(int x, int y, String value, int color){
+        // Draw with color method.
+        int pos = getPos(x,y);
+        try{
+            renderArray[pos] = new Pixel(value, color);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
+        return;
+    }
+
 
     public static void drawRaw(int pos, String value){
         // Raw draw, no coordinates.
         try{
-            renderArray[pos] = value;
+            renderArray[pos] = new Pixel(value, 0);
             render();
         } catch(ArrayIndexOutOfBoundsException e){
             render();
             return;
         }
         return;
+    }
 
+    public static void drawRawColor(int pos, String value, int color){
+        // Raw draw, no coordinates.
+        try{
+            renderArray[pos] = new Pixel(value, color);
+            render();
+        } catch(ArrayIndexOutOfBoundsException e){
+            render();
+            return;
+        }
+        return;
     }
 
     public static void drawRawNoRender(int pos, String value){
         // Raw draw, no coordinates.
-        renderArray[pos] = value;
+        try{
+            renderArray[pos] = new Pixel(value, 0);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
+        return;
+
+    }
+
+    public static void drawRawNoRenderColor(int pos, String value, int color){
+        // Raw draw, no coordinates - No render and with color option.
+        try{
+            renderArray[pos] = new Pixel(value, color);
+        } catch(ArrayIndexOutOfBoundsException e){
+            return;
+        }
         return;
 
     }
@@ -192,7 +250,20 @@ public class LitEngine{
         int endPos = pos + value.length();
         int charPos = 0;
         while(pos < endPos){
-            renderArray[pos] = Character.toString(value.charAt(charPos));
+            renderArray[pos] = new Pixel(Character.toString(value.charAt(charPos)), 0);
+            pos++;
+            charPos++;
+        }
+        render();
+    }
+
+    public static void printColor(int x, int y, String value, int color){
+
+        int pos = getPos(x,y);
+        int endPos = pos + value.length();
+        int charPos = 0;
+        while(pos < endPos){
+            renderArray[pos] = new Pixel(Character.toString(value.charAt(charPos)), color);
             pos++;
             charPos++;
         }
@@ -342,12 +413,7 @@ public class LitEngine{
         // Initiate engine.
         // Create array render array
 
-        int i = 0;
-        while(i < (width*height)){
-            // Insert empty spaces ‌‌
-            renderArray[i] = " ";
-            i++;
-        }
+        summonRenderArray();
 
         if(request == "border"){
             drawRectNoRender(0, 0, width-1, height-1, "*");
@@ -360,13 +426,9 @@ public class LitEngine{
 
     }
 
-    /*
-    public Pixel(String value, int color){
-        value = value;
-        color = color;
-    }
 
-    */
+
+
 
     private static void summonRenderArray(){
 
@@ -386,7 +448,7 @@ public class LitEngine{
     private static void init(String request) throws InterruptedException {
         // Initiate engine.
         // Create array render array
-
+        int i;
         summonRenderArray();
 
         if(request == "border"){
@@ -405,7 +467,7 @@ public class LitEngine{
             // Draw entire window
             i = 0;
             while(i < (width*height)){
-                renderArray[i] = "*";
+                renderArray[i] = new Pixel("*", 0);
                 i++;
             }
 
@@ -448,21 +510,46 @@ public class LitEngine{
 
 
 
+    public static String[] colorValues = new String[11];
+
+    public static void loadColors(){
+        colorValues[0] = "white";
+        colorValues[1] = "red";
+        colorValues[2] = "blue";
+        colorValues[3] = "green";
+        colorValues[4] = "yellow";
+        colorValues[5] = "grey";
+        colorValues[6] = "purple";
+        colorValues[7] = "orange";
+        colorValues[8] = "EMPTY";
+        colorValues[9] = "EMPTY";
+        colorValues[10] = "black";
+    }
+
     public static void render(){
         // Render Engine
 
         // Open HTML
         // Start of print string
 
-        // TODO Get fonts working!
-        String print = "<html><pre>";
+        String print = "<html><pre><span style='color:white;'>";
 
         int drawn = 0;
         int current = 0;
         // Draw out grid loop
         while (drawn < (height * width)) {
             while (current < width) {
-                print = print + renderArray[drawn];
+                // Draw color if requested
+                if(renderArray[drawn].color != 0){
+                    print += "<span style='color:" + colorValues[renderArray[drawn].color] + "'>";
+                }
+                // Add next pixel to print string.
+                print = print + renderArray[drawn].value;
+                // Close color tag
+                if(renderArray[drawn].color != 0){
+                    print += "</span>";
+                }
+
                 current++;
                 drawn++;
             }
@@ -471,7 +558,7 @@ public class LitEngine{
         }
 
         // End of print string
-        print = print + "</pre></html>";
+        print = print + "</span></pre></html>";
         // Print out the rendered text.
         pixelFrame.setText(print);
 
@@ -482,7 +569,7 @@ public class LitEngine{
     public static void setRes(int x, int y){
         width = x + 1;
         height = y + 1;
-        renderArray = new String[width*height];
+        renderArray = new Pixel[width*height];
     }
 
 
@@ -499,241 +586,23 @@ public class LitEngine{
     }
 
 
-    private static void doodle(){
-     /* Generated with LitEngine Plotter */
-        LitEngine.drawNoRender(18, 6, "*");
-        LitEngine.drawNoRender(19, 4, "*");
-        LitEngine.drawNoRender(20, 4, "*");
-        LitEngine.drawNoRender(21, 4, "*");
-        LitEngine.drawNoRender(22, 4, "*");
-        LitEngine.drawNoRender(23, 3, "*");
-        LitEngine.drawNoRender(24, 3, "*");
-        LitEngine.drawNoRender(25, 3, "*");
-        LitEngine.drawNoRender(27, 4, "*");
-        LitEngine.drawNoRender(29, 4, "*");
-        LitEngine.drawNoRender(32, 4, "*");
-        LitEngine.drawNoRender(34, 4, "*");
-        LitEngine.drawNoRender(36, 5, "*");
-        LitEngine.drawNoRender(37, 5, "*");
-        LitEngine.drawNoRender(38, 5, "*");
-        LitEngine.drawNoRender(39, 6, "*");
-        LitEngine.drawNoRender(40, 7, "*");
-        LitEngine.drawNoRender(41, 8, "*");
-        LitEngine.drawNoRender(41, 9, "*");
-        LitEngine.drawNoRender(42, 10, "*");
-        LitEngine.drawNoRender(42, 11, "*");
-        LitEngine.drawNoRender(41, 12, "*");
-        LitEngine.drawNoRender(40, 13, "*");
-        LitEngine.drawNoRender(39, 14, "*");
-        LitEngine.drawNoRender(37, 14, "*");
-        LitEngine.drawNoRender(35, 15, "*");
-        LitEngine.drawNoRender(33, 15, "*");
-        LitEngine.drawNoRender(31, 15, "*");
-        LitEngine.drawNoRender(29, 15, "*");
-        LitEngine.drawNoRender(27, 15, "*");
-        LitEngine.drawNoRender(25, 15, "*");
-        LitEngine.drawNoRender(24, 15, "*");
-        LitEngine.drawNoRender(22, 15, "*");
-        LitEngine.drawNoRender(21, 14, "*");
-        LitEngine.drawNoRender(20, 13, "*");
-        LitEngine.drawNoRender(19, 13, "*");
-        LitEngine.drawNoRender(19, 12, "*");
-        LitEngine.drawNoRender(18, 11, "*");
-        LitEngine.drawNoRender(18, 10, "*");
-        LitEngine.drawNoRender(17, 9, "*");
-        LitEngine.drawNoRender(17, 8, "*");
-        LitEngine.drawNoRender(17, 7, "*");
-        LitEngine.drawNoRender(19, 5, "*");
-        LitEngine.drawNoRender(20, 5, "*");
-        LitEngine.drawNoRender(23, 4, "*");
-        LitEngine.drawNoRender(24, 4, "*");
-        LitEngine.drawNoRender(25, 4, "*");
-        LitEngine.drawNoRender(30, 4, "*");
-        LitEngine.drawNoRender(35, 4, "*");
-        LitEngine.drawNoRender(36, 4, "*");
-        LitEngine.drawNoRender(37, 6, "*");
-        LitEngine.drawNoRender(38, 7, "*");
-        LitEngine.drawNoRender(38, 8, "*");
-        LitEngine.drawNoRender(38, 9, "*");
-        LitEngine.drawNoRender(39, 9, "*");
-        LitEngine.drawNoRender(39, 10, "*");
-        LitEngine.drawNoRender(39, 11, "*");
-        LitEngine.drawNoRender(39, 12, "*");
-        LitEngine.drawNoRender(38, 12, "*");
-        LitEngine.drawNoRender(38, 13, "*");
-        LitEngine.drawNoRender(37, 13, "*");
-        LitEngine.drawNoRender(36, 13, "*");
-        LitEngine.drawNoRender(35, 14, "*");
-        LitEngine.drawNoRender(34, 14, "*");
-        LitEngine.drawNoRender(33, 14, "*");
-        LitEngine.drawNoRender(32, 14, "*");
-        LitEngine.drawNoRender(31, 14, "*");
-        LitEngine.drawNoRender(30, 14, "*");
-        LitEngine.drawNoRender(29, 14, "*");
-        LitEngine.drawNoRender(28, 14, "*");
-        LitEngine.drawNoRender(26, 14, "*");
-        LitEngine.drawNoRender(25, 14, "*");
-        LitEngine.drawNoRender(24, 14, "*");
-        LitEngine.drawNoRender(23, 13, "*");
-        LitEngine.drawNoRender(22, 13, "*");
-        LitEngine.drawNoRender(22, 12, "*");
-        LitEngine.drawNoRender(21, 12, "*");
-        LitEngine.drawNoRender(21, 11, "*");
-        LitEngine.drawNoRender(20, 10, "*");
-        LitEngine.drawNoRender(20, 9, "*");
-        LitEngine.drawNoRender(20, 8, "*");
-        LitEngine.drawNoRender(20, 7, "*");
-        LitEngine.drawNoRender(20, 6, "*");
-        LitEngine.drawNoRender(21, 5, "*");
-        LitEngine.drawNoRender(26, 4, "*");
-        LitEngine.drawNoRender(28, 4, "*");
-        LitEngine.drawNoRender(33, 4, "*");
-        LitEngine.drawNoRender(35, 5, "*");
-        LitEngine.drawNoRender(36, 6, "*");
-        LitEngine.drawNoRender(37, 7, "*");
-        LitEngine.drawNoRender(37, 8, "*");
-        LitEngine.drawNoRender(38, 10, "*");
-        LitEngine.drawNoRender(38, 11, "*");
-        LitEngine.drawNoRender(38, 14, "*");
-        LitEngine.drawNoRender(36, 14, "*");
-        LitEngine.drawNoRender(34, 15, "*");
-        LitEngine.drawNoRender(32, 15, "*");
-        LitEngine.drawNoRender(26, 15, "*");
-        LitEngine.drawNoRender(23, 14, "*");
-        LitEngine.drawNoRender(22, 14, "*");
-        LitEngine.drawNoRender(20, 14, "*");
-        LitEngine.drawNoRender(18, 12, "*");
-        LitEngine.drawNoRender(17, 11, "*");
-        LitEngine.drawNoRender(17, 10, "*");
-        LitEngine.drawNoRender(17, 6, "*");
-        LitEngine.drawNoRender(25, 7, "*");
-        LitEngine.drawNoRender(34, 7, "*");
-        LitEngine.drawNoRender(32, 10, "*");
-        LitEngine.drawNoRender(27, 10, "*");
-        LitEngine.drawNoRender(27, 11, "*");
-        LitEngine.drawNoRender(28, 11, "*");
-        LitEngine.drawNoRender(29, 11, "*");
-        LitEngine.drawNoRender(30, 11, "*");
-        LitEngine.drawNoRender(31, 11, "*");
-        LitEngine.drawNoRender(32, 11, "*");
-        LitEngine.drawNoRender(20, 12, "*");
-        LitEngine.drawNoRender(13, 12, "*");
-        LitEngine.drawNoRender(12, 12, "*");
-        LitEngine.drawNoRender(11, 12, "*");
-        LitEngine.drawNoRender(10, 12, "*");
-        LitEngine.drawNoRender(9, 12, "*");
-        LitEngine.drawNoRender(8, 12, "*");
-        LitEngine.drawNoRender(7, 12, "*");
-        LitEngine.drawNoRender(14, 12, "*");
-        LitEngine.drawNoRender(15, 12, "*");
-        LitEngine.drawNoRender(16, 12, "*");
-        LitEngine.drawNoRender(40, 12, "*");
-        LitEngine.drawNoRender(42, 12, "*");
-        LitEngine.drawNoRender(43, 12, "*");
-        LitEngine.drawNoRender(44, 12, "*");
-        LitEngine.drawNoRender(45, 12, "*");
-        LitEngine.drawNoRender(46, 12, "*");
-        LitEngine.drawNoRender(47, 12, "*");
-        LitEngine.drawNoRender(48, 12, "*");
-        LitEngine.drawNoRender(49, 12, "*");
-        LitEngine.drawNoRender(50, 12, "*");
-        LitEngine.drawNoRender(51, 12, "*");
-        LitEngine.drawNoRender(52, 12, "*");
-        LitEngine.drawNoRender(52, 11, "*");
-        LitEngine.drawNoRender(8, 11, "*");
-        LitEngine.drawNoRender(7, 11, "*");
-        LitEngine.drawNoRender(51, 11, "*");
-        LitEngine.drawNoRender(17, 12, "*");
-        LitEngine.drawNoRender(19, 6, "*");
-        LitEngine.drawNoRender(19, 11, "*");
-        LitEngine.drawNoRender(19, 7, "*");
-        LitEngine.drawNoRender(19, 8, "*");
-        LitEngine.drawNoRender(19, 9, "*");
-        LitEngine.drawNoRender(19, 10, "*");
-        LitEngine.drawNoRender(18, 9, "*");
-        LitEngine.drawNoRender(18, 7, "*");
-        LitEngine.drawNoRender(18, 8, "*");
-        LitEngine.drawNoRender(21, 13, "*");
-        LitEngine.drawNoRender(23, 15, "*");
-        LitEngine.drawNoRender(28, 15, "*");
-        LitEngine.drawNoRender(30, 15, "*");
-        LitEngine.drawNoRender(27, 14, "*");
-        LitEngine.drawNoRender(38, 6, "*");
-        LitEngine.drawNoRender(39, 7, "*");
-        LitEngine.drawNoRender(39, 8, "*");
-        LitEngine.drawNoRender(40, 8, "*");
-        LitEngine.drawNoRender(40, 9, "*");
-        LitEngine.drawNoRender(41, 10, "*");
-        LitEngine.drawNoRender(41, 11, "*");
-        LitEngine.drawNoRender(40, 11, "*");
-        LitEngine.drawNoRender(40, 10, "*");
-        LitEngine.drawNoRender(39, 13, "*");
-        LitEngine.drawNoRender(20, 11, "*");
-        LitEngine.drawNoRender(32, 3, "*");
-        LitEngine.drawNoRender(31, 3, "*");
-        LitEngine.drawNoRender(30, 3, "*");
-        LitEngine.drawNoRender(29, 3, "*");
-        LitEngine.drawNoRender(31, 4, "*");
-        LitEngine.drawNoRender(28, 3, "*");
-        LitEngine.drawNoRender(27, 3, "*");
-        LitEngine.drawNoRender(26, 3, "*");
-        LitEngine.drawNoRender(36, 15, "*");
-        LitEngine.drawNoRender(46, 1, "*");
-        LitEngine.drawNoRender(13, 5, "*");
-        LitEngine.drawNoRender(14, 17, "*");
-        LitEngine.drawNoRender(12, 18, "*");
-        LitEngine.drawNoRender(45, 2, "*");
-        LitEngine.drawNoRender(49, 1, "*");
-        LitEngine.drawNoRender(47, 6, "*");
-        LitEngine.drawNoRender(50, 6, "*");
-        LitEngine.drawNoRender(42, 17, "*");
-        LitEngine.drawNoRender(45, 18, "*");
-        LitEngine.drawNoRender(6, 15, "*");
-        LitEngine.drawNoRender(3, 16, "*");
-        LitEngine.drawNoRender(9, 3, "*");
-        LitEngine.drawNoRender(10, 5, "*");
-        LitEngine.drawNoRender(12, 3, "*");
-        LitEngine.drawNoRender(49, 1, "*");
-        LitEngine.drawNoRender(59, 1, "*");
-        LitEngine.drawNoRender(7, 13, "*");
-        LitEngine.drawNoRender(14, 13, "*");
-        LitEngine.drawNoRender(15, 13, "*");
-        LitEngine.drawNoRender(16, 13, "*");
-        LitEngine.drawNoRender(17, 13, "*");
-        LitEngine.drawNoRender(18, 13, "*");
-        LitEngine.drawNoRender(13, 13, "*");
-        LitEngine.drawNoRender(11, 13, "*");
-        LitEngine.drawNoRender(10, 13, "*");
-        LitEngine.drawNoRender(9, 13, "*");
-        LitEngine.drawNoRender(8, 13, "*");
-        LitEngine.drawNoRender(6, 13, "*");
-        LitEngine.drawNoRender(12, 13, "*");
-        LitEngine.drawNoRender(42, 13, "*");
-        LitEngine.drawNoRender(43, 13, "*");
-        LitEngine.drawNoRender(44, 13, "*");
-        LitEngine.drawNoRender(45, 13, "*");
-        LitEngine.drawNoRender(46, 13, "*");
-        LitEngine.drawNoRender(47, 13, "*");
-        LitEngine.drawNoRender(48, 13, "*");
-        LitEngine.drawNoRender(49, 13, "*");
-        LitEngine.drawNoRender(50, 13, "*");
-        LitEngine.drawNoRender(51, 13, "*");
-        LitEngine.drawNoRender(52, 13, "*");
-        LitEngine.drawNoRender(53, 13, "*");
-        LitEngine.drawNoRender(41, 13, "*");
-        LitEngine.drawNoRender(6, 12, "*");
-        LitEngine.drawNoRender(53, 12, "*");
-        LitEngine.drawNoRender(53, 11, "*");
-        LitEngine.drawNoRender(6, 11, "*");
-        LitEngine.render();
 
 
+
+
+
+}
+
+
+class Pixel{
+
+    String value = " ";
+    int color = 0;
+
+    public Pixel(String valueInput, int colorInput){
+        value = valueInput;
+        color = colorInput;
     }
-
-
-
-
-
 
 
 }
