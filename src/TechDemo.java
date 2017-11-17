@@ -22,6 +22,13 @@ public class TechDemo{
     public static int player_x = random(85);
     public static int player_y = random(16);
 
+    // Position for menu
+    public static int position = 0;
+    // Game started or not. Know when to stop rendering menu.
+    public static boolean gameStarted = false;
+
+
+
 
     public static void main(String[] args) throws InterruptedException, IOException {
         // Initiate LitEngine
@@ -39,78 +46,21 @@ public class TechDemo{
         LitEngine.setTitle("LitEngine Tech Demo");
         LitEngine.start("border");
 
-        Doodles.ColorTest(0,0);
-        LitEngine.render();
-        Thread.sleep(10000);
 
 
 
-        LitEngine.frame.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
+        // Input
+        keyHandlerMenu();
 
-                // Hero controller handler
-                if(e.getKeyCode() == 87){
-                    TechDemo.hero_y -= 1;
-                }
-                if(e.getKeyCode() == 83){
-                    TechDemo.hero_y++;
-                }
-                if(e.getKeyCode() == 65){
-                    TechDemo.hero_x -= 1;
-                }
-                if(e.getKeyCode() == 68){
-                    TechDemo.hero_x++;
-                }
+        // Menu
 
-                // Player controller handler
-                if(e.getKeyCode() == 38){
-                    player_y -= 1;
-                }
-                if(e.getKeyCode() == 40){
-                    player_y++;
-                }
-                if(e.getKeyCode() == 37){
-                    player_x -= 1;
-                }
-                if(e.getKeyCode() == 39){
-                    player_x++;
-                }
-            }
+        drawMenu();
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
+        keyHandlerGame();
+        startGame();
 
 
-        boolean alive= true;
-
-        while(alive){
-            LitEngine.clearNoRender("border");
-
-            // Collisions
-            hero_x = checkCollision_x(hero_x);
-            hero_y = checkCollision_y(hero_y);
-
-            player_x = checkCollision_x(player_x);
-            player_y = checkCollision_y(player_y);
-
-
-            Doodles.Hero(hero_x,hero_y);
-            Doodles.Monster(player_x,player_y);
-
-            if(Math.abs(hero_x-player_x)<2 && Math.abs(hero_y-player_y)<2){
-                alive = false;
-            }
-
-            LitEngine.render();
-            Thread.sleep(16);
-        }
 
 
 
@@ -180,6 +130,137 @@ public class TechDemo{
 
     }
 
+
+    public static void startGame() throws InterruptedException {
+
+
+        boolean game = true;
+
+        while(game){
+            LitEngine.clearNoRender("border");
+
+            // Collisions
+            hero_x = checkCollision_x(hero_x);
+            hero_y = checkCollision_y(hero_y);
+
+            player_x = checkCollision_x(player_x);
+            player_y = checkCollision_y(player_y);
+
+
+            Doodles.Hero(hero_x,hero_y);
+            Doodles.Monster(player_x,player_y);
+
+            if(Math.abs(hero_x-player_x)<2 && Math.abs(hero_y-player_y)<2){
+                game = false;
+            }
+
+            LitEngine.render();
+            Thread.sleep(16);
+        }
+    }
+
+    public static void drawMenu() throws InterruptedException {
+
+
+        LitEngine.printColor(10,3,"Welcome to L.it Night \uD83D\uDD25 - Battle Royale!", 0);
+        while(gameStarted == false){
+
+            Doodles.Fire(0,0);
+
+            Doodles.TinyBox(3,13);
+            LitEngine.printColor(8,10,"1 player mode (Coming soon)", 1);
+
+            Doodles.TinyBox(3,9);
+            LitEngine.printColor(8,14,"2 player mode", 0);
+
+
+            LitEngine.render();
+            Thread.sleep(16);
+        }
+
+
+
+
+    }
+
+    public static void keyHandlerGame(){
+
+
+
+        LitEngine.frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+                // Hero controller handler
+                if(e.getKeyCode() == 87){
+                    TechDemo.hero_y -= 1;
+                }
+                if(e.getKeyCode() == 83){
+                    TechDemo.hero_y++;
+                }
+                if(e.getKeyCode() == 65){
+                    TechDemo.hero_x -= 1;
+                }
+                if(e.getKeyCode() == 68){
+                    TechDemo.hero_x++;
+                }
+
+                // Player controller handler
+                if(e.getKeyCode() == 38){
+                    player_y -= 1;
+                }
+                if(e.getKeyCode() == 40){
+                    player_y++;
+                }
+                if(e.getKeyCode() == 37){
+                    player_x -= 1;
+                }
+                if(e.getKeyCode() == 39){
+                    player_x++;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
+
+    public static void keyHandlerMenu(){
+
+
+
+        LitEngine.frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+
+                // Player controller handler
+                if(e.getKeyCode() == 38){
+                   position++;
+                }
+                if(e.getKeyCode() == 40){
+                    position -= 1;
+                }
+                if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                    gameStarted = true;
+                }
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+    }
 
     public static int checkCollision_x(int x){
 
