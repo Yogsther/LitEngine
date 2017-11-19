@@ -8,57 +8,63 @@
 Try running TechDemo.class to see what this beast can do.
 
 
-Setup:
+Installation:
 
-Make sure LitEngine.class is in your project.
-First thing on launch, initate LitEngine:
+You need three files in your project, LitEngine.java and Doodles.java and icon.png
+These files can be found in the src folder.
+(Doodles is a class full with doodles, and LitEngine uses some of these for the splash screeen.)
 
-LitEngine.start(String type); "type" is the type of render you want, border or clear. 
-Border will draw a border around the window.
-
-ex:
-```java
-LitEngine.start("border");
-```
-
-Now you are ready to use the engine. 
-Here are some methods you can use.
-
-### Draw
+### Starter Guide
 ```java
 
-// Draw pixel (value should only be one character.)
-LitEngine.draw(int x, int y, String value);
+// First we initiate the L.it Engine - This is essential for it to work.
 
-// Print text
-LitEngine.print(int x, int y, String value);
+LitEngine.start("border"); // "border" decalres the type of window we want to draw, either clear or border.
 
-// Animate printed text (speed is how fast it prints out.)
-LitEngine.printAnimated(int x, int y, String value, int speed);
+// Let's draw some text
 
-// Draw rectangle (value should only be one character)
-LitEngine.drawRect(int x, int y, int width, int height, String value);
+LitEngine.printColor(20, 10, "Hello World", 1); // Prints "Hello World" in red - at 20, 10
 
-// Draw animated rectangle (value should only be one character)
-LitEngine.drawRectAnimated(int x, int y, int width, int height, String value, int speed);
+Thread.sleep(3000); // Wait for 3 seconds
+
+// Here I used LitEngine Plotter (avalible on the LitEngine website) to scetch a stick figure.
+// I got this method, that I save in another class called Doodles. 
+
+public static void Stickfigure(int x, int y){
+	/* Generated with LitEngine Plotter */
+	LitEngine.drawNoRenderColor(2 + x, 0 + y, "O",0);
+	LitEngine.drawNoRenderColor(0 + x, 1 + y, "-",0);
+	LitEngine.drawNoRenderColor(3 + x, 1 + y, "-",0);
+	LitEngine.drawNoRenderColor(2 + x, 1 + y, "|",0);
+	LitEngine.drawNoRenderColor(2 + x, 2 + y, "^",0);
+}
+
+// To draw him, I just call the class and set the x and y offsets.
+// Let's draw him!
+
+Doodles.Stickfigure(5,10); // Draws stick figure at 5,10
 
 
-// Draw circle (value should only be one character)
-LitEngine.drawCircle(int x, int y, int radius, String value);
+// If I want the stick figure to be playable, I can change his x and y coordinates to varaiables, and then 
+// draw him in a loop. That would look something like this.
 
-// Clear everything (type = "border" || "clear")
-LitEngine.clear(String type)
-```
+while(running){
 
-### Input
-```java
+	if(LitEngine.checkKey(87)){
+	// If W is held down
+	stickfigure_y -= 1; // Move stickfigure up
+	}
 
-// Get input
-// Get String
-String string = LitEngine.inputString();
+	// Draw scene
+	LitEngine.clearNoRender("border"); // Clear scene, the "noRender" part is important, since this will not output to the screen until everything is drawn - and prevent flickering.
+	Doodles.Stickfigure(stickfigure_x, stickfigure_y); // Draw stick figure
+	
+	// Render scene
+	LitEngine.render();
+}
 
-// Get int
-int num = LitEngine.inputInt();
+
+
 
 ```
 
