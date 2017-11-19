@@ -5,12 +5,11 @@
 
 [Check out the Website and full documentation!](http://livingforit.xyz/lit_engine/ "L.it's Home.")
 
-Try running TechDemo.class to see what this beast can do.
-
+Try downloading the TechDemo.jar from the website or running TechDemo.class to see what this beast can do.
 
 Installation:
 
-You need three files in your project, LitEngine.java and Doodles.java and icon.png
+You need three files in your project, LitEngine.java, Doodles.java and icon.png
 These files can be found in the src folder.
 (Doodles is a class full with doodles, and LitEngine uses some of these for the splash screeen.)
 
