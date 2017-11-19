@@ -5,12 +5,11 @@
 
 [Check out the Website and full documentation!](http://livingforit.xyz/lit_engine/ "L.it's Home.")
 
-Try running TechDemo.class to see what this beast can do.
+Try downloading the TechDemo.jar from the website or running TechDemo.class to see what this beast can do.
 
+### Installation:
 
-Installation:
-
-You need three files in your project, LitEngine.java and Doodles.java and icon.png
+You need three files in your project, LitEngine.java, Doodles.java and icon.png
 These files can be found in the src folder.
 (Doodles is a class full with doodles, and LitEngine uses some of these for the splash screeen.)
 
@@ -25,10 +24,9 @@ LitEngine.start("border"); // "border" decalres the type of window we want to dr
 
 LitEngine.printColor(20, 10, "Hello World", 1); // Prints "Hello World" in red - at 20, 10
 
-Thread.sleep(3000); // Wait for 3 seconds
 
-// Here I used LitEngine Plotter (avalible on the LitEngine website) to scetch a stick figure.
-// I got this method, that I save in another class called Doodles. 
+// Here I used LitEngine Plotter (avalible on the LitEngine website) to sketch a stick figure.
+// I got this method, that I saved it in another class called Doodles. 
 
 public static void Stickfigure(int x, int y){
 	/* Generated with LitEngine Plotter */
