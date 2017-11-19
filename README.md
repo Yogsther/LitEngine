@@ -25,8 +25,8 @@ LitEngine.start("border"); // "border" decalres the type of window we want to dr
 LitEngine.printColor(20, 10, "Hello World", 1); // Prints "Hello World" in red - at 20, 10
 
 
-// Here I used LitEngine Plotter (avalible on the LitEngine website) to scetch a stick figure.
-// I got this method, that I save in another class called Doodles. 
+// Here I used LitEngine Plotter (avalible on the LitEngine website) to sketch a stick figure.
+// I got this method, that I saved it in another class called Doodles. 
 
 public static void Stickfigure(int x, int y){
 	/* Generated with LitEngine Plotter */
