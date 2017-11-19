@@ -3,6 +3,9 @@ import java.awt.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
     LitEngine (the Livingfor.it ASCII Game Engine)
@@ -40,7 +43,6 @@ import java.awt.event.KeyListener;
 
 
     To Add:
-    - Color support
     - Audio support
 
 */
@@ -69,9 +71,6 @@ public class LitEngine{
 
     // Call this method to start up LitEngine.
     public static synchronized void start(String type) throws InterruptedException {
-
-        // Setup colors
-        loadColors();
 
         // Set up JFrame
         frame = new JFrame(gameTitle);
@@ -119,30 +118,103 @@ public class LitEngine{
         frame.setVisible(true);
 
 
+        // Setup colors
+        loadColors();
+
+        // Load key handler
+        keyHandler();
+
         init(type);
 
 
 
         if(renderSplash){
-            // Render splash screen
-            drawRectAnimated(17,7,24, 6,"*",5);
-            printAnimated(20, 9, "Powered by", 20);
-            printAnimated(20, 10, "the Livingfor.it", 20);
-            printAnimated(20, 11, "Engine (v.0.2)", 20);
-            Thread.sleep(1000);
+            // Render splash screen animation
 
-                    drawRectAnimated(17,7,24, 6," ",5);
+
+                for (int i = 0; i < 3; i++) {
+                    clearNoRender(type);
+                    if (i % 2 == 0) {
+                        // i == even
+                        Doodles.Fire01(0, 0);
+
+                    } else {
+                        // Draw other frame
+                        Doodles.Fire02(0, 0);
+
+                    }
+                    // Draw L.it Logo
+                    print(20, 10, "Powered by L.it Engine (v.0.5)");
+                    render();
                     Thread.sleep(500);
 
-                    init(type);
-                    Thread.sleep(500);
-            }
+                }
+
+            init(type);
+            Thread.sleep(500);
+        }
     }
 
 
+    // Disable splash screen
     public static void debugDisableSplash(){
         renderSplash = false;
     }
+
+    public static void debugShowPressedKeys(){
+        // Show currently pressed keys in the console.
+        debugShowKeys = true;
+    }
+
+
+    public static Set<Integer> pressedKeys = new HashSet<Integer>();
+    private static boolean debugShowKeys = false;
+
+
+    public static boolean checkKey(int keycode){
+        boolean state = false;
+
+        ArrayList<Integer> intArrPressedKeys = new ArrayList<>(pressedKeys);
+
+        for(int i = 0; i < pressedKeys.size(); i++){
+            if(intArrPressedKeys.get(i) == keycode){
+                state = true;
+                break;
+            }
+        }
+        return state;
+    }
+
+
+    private static void keyHandler(){
+        // This key handler will handle all key inputs, and add them to the pressedKeys array.
+        // I recommend using the function checkKey(int keycode); to check for inputs.
+        // or you can use this array to get key input in your game.
+
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                pressedKeys.add(e.getKeyCode());
+                if(debugShowKeys){
+                    System.out.println("Debug: Key pressed. All pressed keys: " + pressedKeys);
+                }
+
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {
+                pressedKeys.remove(e.getKeyCode());
+                if(debugShowKeys){
+                    System.out.println("Debug: Key released. All pressed keys: " + pressedKeys);
+                }
+
+            }
+        });
+    }
+
 
 
     public static void setTitle(String title){
@@ -257,6 +329,20 @@ public class LitEngine{
         render();
     }
 
+
+
+    public static void printNoRender(int x, int y, String value){
+
+        int pos = getPos(x,y);
+        int endPos = pos + value.length();
+        int charPos = 0;
+        while(pos < endPos){
+            renderArray[pos] = new Pixel(Character.toString(value.charAt(charPos)), 0);
+            pos++;
+            charPos++;
+        }
+    }
+
     public static void printColor(int x, int y, String value, int color){
 
         int pos = getPos(x,y);
@@ -270,6 +356,18 @@ public class LitEngine{
         render();
     }
 
+
+    public static void printColorNoRender(int x, int y, String value, int color){
+
+        int pos = getPos(x,y);
+        int endPos = pos + value.length();
+        int charPos = 0;
+        while(pos < endPos){
+            renderArray[pos] = new Pixel(Character.toString(value.charAt(charPos)), color);
+            pos++;
+            charPos++;
+        }
+    }
 
 
     public static void drawRectNoRender(int x, int y, int w, int h, String value){
@@ -579,9 +677,19 @@ public class LitEngine{
         String input = JOptionPane.showInputDialog(null);
         return input;
     }
+
+    public static String inputStringWithMessage(String message){
+        String input = JOptionPane.showInputDialog(null, message);
+        return input;
+    }
     // Get input int
     public static int inputInt(){
         int input = Integer.parseInt(JOptionPane.showInputDialog(null));
+        return input;
+    }
+
+    public static int inputIntWithMessage(String message){
+        int input = Integer.parseInt(JOptionPane.showInputDialog(null, message));
         return input;
     }
 
