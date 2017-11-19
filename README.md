@@ -7,7 +7,7 @@
 
 Try downloading the TechDemo.jar from the website or running TechDemo.class to see what this beast can do.
 
-Installation:
+###Installation:
 
 You need three files in your project, LitEngine.java, Doodles.java and icon.png
 These files can be found in the src folder.
