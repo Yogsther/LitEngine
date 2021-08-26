@@ -3,7 +3,7 @@
 ## LitEngine (the Livingfor.it Engine) is an ASCII Game Engine.
 ### Made to be very easy, and user friendly. Runs directly in your terminal.
 
-[Check out the Website and full documentation!](http://livingforit.xyz/lit_engine/ "L.it's Home.")
+[Check out the Website and full documentation!](https://notu.okdev.se/lit_engine/)
 
 Try downloading the TechDemo.jar from the website or running TechDemo.class to see what this beast can do.
 
